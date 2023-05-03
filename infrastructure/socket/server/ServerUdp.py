@@ -7,7 +7,8 @@ from .Server import Server
 
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', "..")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..','..')))
-from dto.DtoVol import DtoVol
+from dto.DtoReferance import DtoReferance
+from storage.repository.VolRepository import VolRepository
 
 class ServerUdp(Server):
     def __init__(self, host, port):
@@ -20,7 +21,7 @@ class ServerUdp(Server):
         print(f'Server listening on {self.host}:{self.port}...')
 
         while True:
-            data,addr = self.sock.recvfrom(1024)
+            data,addr = self.sock.recvfrom(4096)
             t = threading.Thread(target=self.handleRequest, args=(data, addr))
             t.start()
 
@@ -28,6 +29,10 @@ class ServerUdp(Server):
         self.sock.close()
 
     def handleRequest(self, data, addr):
-        msg = DtoVol.deserialize(data)
-        print(f'Received data from address {addr}: {msg.getNombreDePlaceDispo, msg.getPrix, msg.getReferance}')
+        msg = DtoReferance.deserialize(data)
+        msg.showData()
+        repository = VolRepository("vols.txt")
+        print('it is supposed to be here')
+        dto = repository.readVolByReferance(msg.getReferance)
+        self.sock.sendto(dto.serialize(),addr)
 

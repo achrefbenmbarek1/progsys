@@ -3,8 +3,9 @@ from infrastructure.socket.client.Client import Client
 from infrastructure.socket.server.Server import Server
 from infrastructure.socket.socketFactory.FactorySocketUnixImp import FactorySocket, FactorySocketUnixImp
 from infrastructure.socket.socketFactory.FactorySocketTcpImp import FactorySocketTcpImp
-from infrastructure.socket.socketFactory.FactorySocketTcpImp import FactorySocketTcpImp
-
+from infrastructure.socket.socketFactory.FactorySocketUdpImp import FactorySocketUdpImp
+from infrastructure.dto.DtoVol import DtoVol
+from infrastructure.dto.DtoReferance import DtoReferance
 
 def main():
     if len(sys.argv) < 3:
@@ -13,8 +14,10 @@ def main():
 
     mode = sys.argv[1]
     protocol = sys.argv[2]
+
     ipAddress = "192.168.100.6"
-    port = 5103
+    # ipAddress = "127.0.0.1"
+    port = 5104
 
     sock_path = '/tmp/mysocket'
 
@@ -25,13 +28,17 @@ def main():
         server.stop()
 
     elif mode == 'server' and protocol == "tcp" :
-        factory:FactorySocket = FactorySocketTcpImp(ipAddress, port)
+        # dtoVol = DtoVol("dhff",5,3.1,"dhf")
+        dtoReferance = DtoReferance("dhf", "vol","get")
+        factory:FactorySocket = FactorySocketTcpImp(ipAddress, port,dtoReferance)
         server:Server = factory.getServer()
         server.start()
         server.stop()
 
     elif mode == 'server' and protocol == "udp" :
-        factory:FactorySocket = FactorySocketTcpImp(ipAddress, port)
+        # dtoVol = DtoVol("dhff",5,3.1,"dhf")
+        dtoReferance = DtoReferance("dhf", "vol","get")
+        factory:FactorySocket = FactorySocketTcpImp(ipAddress, port, dtoReferance)
         server:Server = factory.getServer()
         server.start()
         server.stop()
@@ -42,12 +49,15 @@ def main():
         client.send()
 
     elif mode == 'client' and protocol == 'tcp':
-        factory:FactorySocket = FactorySocketTcpImp(ipAddress, port)
+        # dtoVol = DtoVol("dhff",5,3.1,"dhf")
+        dtoReferance = DtoReferance("dhf", "vol", "get")
+        factory:FactorySocket = FactorySocketTcpImp(ipAddress, port, dtoReferance)
         client:Client = factory.getClient()
         client.send()
 
     elif mode == 'client' and protocol == 'udp':
-        factory:FactorySocket = FactorySocketTcpImp(ipAddress, port)
+        dtoReferance = DtoReferance("dhf", "vol","get")
+        factory:FactorySocket = FactorySocketUdpImp(ipAddress, port,dtoReferance)
         client:Client = factory.getClient()
         client.send()
         

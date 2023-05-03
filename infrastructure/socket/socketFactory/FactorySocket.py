@@ -6,9 +6,9 @@ from ..server.Server import Server
 
 class FactorySocket(ABC):
     @abstractmethod
-    def getServer(self, protocol:str)->Server:
+    def getServer(self)->Server:
         pass
 
     @abstractmethod
-    def getClient(self, protocol:str)->Client:
+    def getClient(self)->Client:
         pass

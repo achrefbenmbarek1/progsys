@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package mypackage;
+
+message Request {
+  string referance = 1;
+  string dataType = 2;
+  string method = 3;
+}

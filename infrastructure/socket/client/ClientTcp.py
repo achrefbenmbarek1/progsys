@@ -2,17 +2,15 @@ import socket
 import sys
 import os
 
-# from gestionDesVols.dto.DtoVol import DtoVol
 from .Client import Client
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..','..')))
-from dto.DtoVol import DtoVol
 from dto.Dto import Dto
+from dto.dtoFactory.DtoFactory import DtoFactory
 
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', "..")))
 
 class ClientTcp(Client):
 
-    def __init__(self, host, port, msg:DtoVol):
+    def __init__(self, host:str, port:int, msg:Dto):
         self.host = host
         self.port = port
         self.msg = msg
@@ -22,11 +20,9 @@ class ClientTcp(Client):
         sock.connect((self.host, self.port))
         sock.sendall(self.msg.serialize())
         response =sock.recv(1024)
-
-# Deserialize the response into a DtoVol object
-        response_dto = Dto.deserialize(response)
-        print(f'Received response: {type(response_dto)}')
-        response_dto.showData()
-
+        dtoFactory = DtoFactory() 
+        dto = dtoFactory.create(self.msg.getDataType,response)
+        print(f'Received response: {type(dto)}')
+        dto.showData()
         sock.close()
 

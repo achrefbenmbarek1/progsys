@@ -9,6 +9,8 @@ from .Server import Server
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..','..')))
 from dto.DtoVol import DtoVol
 from dto.Dto import Dto
+from dto.DtoReferance import DtoReferance
+from storage.repository.VolRepository import VolRepository
 
 class ServerTcp(Server):
     def __init__(self, host, port):
@@ -33,11 +35,13 @@ class ServerTcp(Server):
                 conn.close()
                 return
             # msg = DtoVol.deserialize(data)
-            msg = Dto.deserialize(data)
+            msg = DtoReferance.deserialize(data)
             print(f'type of data: {type(msg)}')
-            # print(f'Received data: {msg.getNombreDePlaceDispo, msg.getPrix, msg.getReferance}')
             msg.showData()
-            conn.send(msg.serialize())
+            repository = VolRepository("vols.txt")
+            print('it is supposed to be here')
+            dto = repository.readVolByReferance(msg.getReferance)
+            conn.send(dto.serialize())
             conn.close()
 
     def stop(self):
