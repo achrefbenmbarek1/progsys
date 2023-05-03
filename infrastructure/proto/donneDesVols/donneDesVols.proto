@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package mypackage;
+
+message Vol {
+  string referance = 1;
+  string destination = 2;
+  int32 nombreDePlaceDispo = 3;
+  float prix = 4;
+}
