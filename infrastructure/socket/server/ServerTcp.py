@@ -2,7 +2,6 @@ import socket
 import os
 import sys
 from threading import Thread
-# from gestionDesVols.dto.DtoVol import DtoVol
 from .Server import Server
 
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', "..")))
@@ -11,6 +10,7 @@ from dto.DtoVol import DtoVol
 from dto.Dto import Dto
 from dto.DtoReferance import DtoReferance
 from storage.repository.VolRepository import VolRepository
+from storage.repository.RepositoryFactory import RepositoryFactory
 
 class ServerTcp(Server):
     def __init__(self, host, port):
@@ -34,14 +34,21 @@ class ServerTcp(Server):
             if not data:
                 conn.close()
                 return
-            # msg = DtoVol.deserialize(data)
             msg = DtoReferance.deserialize(data)
             print(f'type of data: {type(msg)}')
             msg.showData()
-            repository = VolRepository("vols.txt")
-            print('it is supposed to be here')
-            dto = repository.readVolByReferance(msg.getReferance)
-            conn.send(dto.serialize())
+            repositoryFactory = RepositoryFactory(msg.getDataType)
+            repository = repositoryFactory.createRepository()
+            if msg.getDataType == "vol":
+                dto = repository.readVolByReferance(msg.getReferance)
+                conn.send(dto.serialize())
+            elif msg.getDataType == "facture":
+                dto = repository.readFactureByReferance(msg.getReferance)
+                conn.send(dto.serialize())
+            elif msg.getDataType == "transactionHistory" and msg.getMethod == "get":
+                dto = repository.readHistory()
+                conn.send(dto.serialize())
+                
             conn.close()
 
     def stop(self):

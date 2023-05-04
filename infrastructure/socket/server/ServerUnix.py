@@ -13,7 +13,6 @@ class ServerUnix(Server):
         self.sock_path = sock_path
 
     def start(self):
-        # Make sure the socket file doesn't already exist
         try:
             os.unlink(self.sock_path)
         except OSError:

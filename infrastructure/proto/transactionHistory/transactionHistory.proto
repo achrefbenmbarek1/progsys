@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+message ElementOfTransactionHistory {
+  string referanceVol = 1;
+  string referenceAgence = 2;
+  string transaction = 3;
+  int32 valeur = 4;
+  string resultat = 5;
+}
+
+message EntireTransactionHistory {
+  repeated ElementOfTransactionHistory transactionHistory = 1;
+}

@@ -2,10 +2,8 @@ import socket
 import os
 import sys
 import threading
-# from gestionDesVols.dto.DtoVol import DtoVol
 from .Server import Server
 
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', "..")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..','..')))
 from dto.DtoReferance import DtoReferance
 from storage.repository.VolRepository import VolRepository
@@ -32,7 +30,6 @@ class ServerUdp(Server):
         msg = DtoReferance.deserialize(data)
         msg.showData()
         repository = VolRepository("vols.txt")
-        print('it is supposed to be here')
         dto = repository.readVolByReferance(msg.getReferance)
         self.sock.sendto(dto.serialize(),addr)
 

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package mypackage;
+
+message Facture {
+  string referance = 1;
+  string sommeAPayer = 2;
+}
+
