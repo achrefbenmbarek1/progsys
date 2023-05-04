@@ -26,3 +26,4 @@ class ClientTcp(Client):
         dto.showData()
         sock.close()
 
+

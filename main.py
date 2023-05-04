@@ -23,13 +23,13 @@ def main():
     sock_path = '/tmp/mysocket'
 
     if mode == 'server' and protocol == "unix" :
-        socketFactory:FactorySocket = FactorySocketUnixImp(sock_path)
+        dtoReferance = DtoReferance("dhf", "vol","get")
+        socketFactory:FactorySocket = FactorySocketUnixImp(sock_path, dtoReferance)
         server:Server = socketFactory.getServer()
         server.start()
         server.stop()
 
     elif mode == 'server' and protocol == "tcp" :
-        # dtoVol = DtoVol("dhff",5,3.1,"dhf")
         dtoReferance = DtoReferance("dhf", "vol","get")
         factory:FactorySocket = FactorySocketTcpImp(ipAddress, port,dtoReferance)
         server:Server = factory.getServer()
@@ -37,7 +37,6 @@ def main():
         server.stop()
 
     elif mode == 'server' and protocol == "udp" :
-        # dtoVol = DtoVol("dhff",5,3.1,"dhf")
         dtoReferance = DtoReferance("dhf", "vol","get")
         factory:FactorySocket = FactorySocketTcpImp(ipAddress, port, dtoReferance)
         server:Server = factory.getServer()
@@ -58,7 +57,9 @@ def main():
             if choix == "1":
                 os.system('clear')
                 if protocol == 'unix':
-                    factory:FactorySocket = FactorySocketUnixImp(sock_path)
+                    reference = input("saisir la reference du vol")
+                    dtoReferance = DtoReferance(reference, "vol", "get")
+                    factory:FactorySocket = FactorySocketUnixImp(sock_path, dtoReferance)
                     client:Client = factory.getClient()
                     client.send()
 
@@ -82,7 +83,9 @@ def main():
             elif choix == "2":
                 os.system('clear')
                 if protocol == 'unix':
-                    factory:FactorySocket = FactorySocketUnixImp(sock_path)
+                    reference = input("saisir la reference de la facture")
+                    dtoReferance = DtoReferance(reference, "facture", "get")
+                    factory:FactorySocket = FactorySocketUnixImp(sock_path, dtoReferance)
                     client:Client = factory.getClient()
                     client.send()
 
@@ -105,12 +108,12 @@ def main():
             elif choix == "3":
                 os.system('clear')
                 if protocol == 'unix':
-                    factory:FactorySocket = FactorySocketUnixImp(sock_path)
+                    dtoReferance = DtoReferance("dummyField", "transactionHistory", "get")
+                    factory:FactorySocket = FactorySocketUnixImp(sock_path, dtoReferance)
                     client:Client = factory.getClient()
                     client.send()
 
                 elif protocol == 'tcp':
-                    # reference = input("saisir la reference de la facture")
                     dtoReferance = DtoReferance("dummyField", "transactionHistory", "get")
                     factory:FactorySocket = FactorySocketTcpImp(ipAddress, port, dtoReferance)
                     client:Client = factory.getClient()
@@ -130,7 +133,7 @@ def main():
             elif choix == "5":
                 break
             else:
-                print("Choix invalide. Veuillez entrer un chiffre entre 1 et 6.")
+                print("Choix invalide. Veuillez entrer un chiffre entre 1 et 5.")
        
     else:
         print('Invalid mode. Use "server" or "client" and precise the protocol.')

@@ -4,12 +4,8 @@ import sys
 from threading import Thread
 from .Server import Server
 
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', "..")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..','..')))
-from dto.DtoVol import DtoVol
-from dto.Dto import Dto
 from dto.DtoReferance import DtoReferance
-from storage.repository.VolRepository import VolRepository
 from storage.repository.RepositoryFactory import RepositoryFactory
 
 class ServerTcp(Server):
