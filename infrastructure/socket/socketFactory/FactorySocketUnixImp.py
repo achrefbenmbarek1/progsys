@@ -19,10 +19,5 @@ class FactorySocketUnixImp(FactorySocket):
         return server
 
     def getClient(self)->Client:
-        # referance = input("saisir la referance du vol")
-        # destination = input("saisir la destination du vol")
-        # nombreDePlaceDispo = int(input("saisir le nombreDePlaceDispo du vol"))
-        # prix = float(input("saisir le prix du vol"))
-        # msg = DtoVol(destination, nombreDePlaceDispo, prix, referance)
         client = ClientUnix(self.sock_path, self.msg)
         return client

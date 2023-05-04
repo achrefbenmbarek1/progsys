@@ -21,11 +21,5 @@ class FactorySocketUdpImp(FactorySocket):
         return server
 
     def getClient(self)->Client:
-        # referance = input("saisir la referance du vol")
-        # destination = input("saisir la destination du vol")
-        # nombreDePlaceDispo = int(input("saisir le nombreDePlaceDispo du vol"))
-        # prix = float(input("saisir le prix du vol"))
-        # msg = DtoVol(destination, nombreDePlaceDispo, prix, referance)
-        # client = ClientUdp(self.host, self.port, msg)
         client = ClientUdp(self.host, self.port, self.dto)
         return client

@@ -1,12 +1,12 @@
 import socket
 import os
 import sys
-import threading
+from threading import Thread
 from .Server import Server
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..','..')))
 from dto.DtoReferance import DtoReferance
-from storage.repository.VolRepository import VolRepository
+from storage.repository.RepositoryFactory import RepositoryFactory
 
 class ServerUdp(Server):
     def __init__(self, host, port):
@@ -19,17 +19,27 @@ class ServerUdp(Server):
         print(f'Server listening on {self.host}:{self.port}...')
 
         while True:
-            data,addr = self.sock.recvfrom(4096)
-            t = threading.Thread(target=self.handleRequest, args=(data, addr))
+            data, addr = self.sock.recvfrom(1024)
+            print(f'Connected by {addr}')
+            t = Thread(target=self.handleRequest, args=(data, addr))
             t.start()
-
-    def stop(self):
-        self.sock.close()
 
     def handleRequest(self, data, addr):
         msg = DtoReferance.deserialize(data)
+        print(f'type of data: {type(msg)}')
         msg.showData()
-        repository = VolRepository("vols.txt")
-        dto = repository.readVolByReferance(msg.getReferance)
-        self.sock.sendto(dto.serialize(),addr)
+        repositoryFactory = RepositoryFactory(msg.getDataType)
+        repository = repositoryFactory.createRepository()
+        if msg.getDataType == "vol":
+            dto = repository.readVolByReferance(msg.getReferance)
+            self.sock.sendto(dto.serialize(), addr)
+        elif msg.getDataType == "facture":
+            dto = repository.readFactureByReferance(msg.getReferance)
+            self.sock.sendto(dto.serialize(), addr)
+        elif msg.getDataType == "transactionHistory" and msg.getMethod == "get":
+            dto = repository.readHistory()
+            self.sock.sendto(dto.serialize(), addr)
+
+    def stop(self):
+        self.sock.close()
 

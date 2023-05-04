@@ -72,13 +72,14 @@ def main():
                     client.send()
 
                 elif protocol == 'udp':
-                    dtoReferance = DtoReferance("dhf", "vol","get")
+                    reference = input("saisir la reference du vol")
+                    dtoReferance = DtoReferance(reference, "vol", "get")
                     factory:FactorySocket = FactorySocketUdpImp(ipAddress, port,dtoReferance)
                     client:Client = factory.getClient()
                     client.send()
 
                 else:
-                    print('invalid protocol')
+                    print('not supported protocol')
 
             elif choix == "2":
                 os.system('clear')
@@ -97,13 +98,14 @@ def main():
                     client.send()
 
                 elif protocol == 'udp':
-                    dtoReferance = DtoReferance("dhf", "vol","get")
+                    reference = input("saisir la reference de la facture")
+                    dtoReferance = DtoReferance(reference, "facture", "get")
                     factory:FactorySocket = FactorySocketUdpImp(ipAddress, port,dtoReferance)
                     client:Client = factory.getClient()
                     client.send()
 
                 else:
-                    print('invalid protocol')
+                    print('not supported protocol')
 
             elif choix == "3":
                 os.system('clear')
@@ -120,13 +122,13 @@ def main():
                     client.send()
 
                 elif protocol == 'udp':
-                    dtoReferance = DtoReferance("dhf", "vol","get")
+                    dtoReferance = DtoReferance("dummyField", "transactionHistory", "get")
                     factory:FactorySocket = FactorySocketUdpImp(ipAddress, port,dtoReferance)
                     client:Client = factory.getClient()
                     client.send()
 
                 else:
-                    print('invalid protocol')
+                    print('not supported protocol')
 
             elif choix == "4":
                 break
@@ -136,7 +138,7 @@ def main():
                 print("Choix invalide. Veuillez entrer un chiffre entre 1 et 5.")
        
     else:
-        print('Invalid mode. Use "server" or "client" and precise the protocol.')
+        print('Invalid mode. Use "server" or "client" and/or precise the protocol.')
         sys.exit(1)
 
 if __name__ == '__main__':
